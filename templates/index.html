@@ -18,7 +18,7 @@
 
         /* General Styling */
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             background-color: var(--primary-color);
             color: var(--secondary-color);
             margin: 0;
@@ -120,14 +120,58 @@
             transform: translateY(-5px);
         }
 
-        pre {
+        .download-btn {
+            display: inline-block;
+            background: var(--button-gradient);
+            color: white;
+            text-decoration: none;
+            padding: 15px 25px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-align: center;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-5px);
+            background-color: #405B7F;
+        }
+
+        .code-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .code-box {
+            flex: 1;
+            min-width: 300px;
+            max-width: 600px;
             background-color: var(--accent-color);
             border: 2px solid var(--light-blue);
             padding: 20px;
             border-radius: 12px;
             overflow-x: auto;
-            max-width: 600px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .code-box:hover {
+            transform: translateY(-5px);
+        }
+
+        pre {
+            background-color: var(--accent-color);
+            padding: 15px;
+            border-radius: 12px;
             color: var(--secondary-color);
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
 
         .floating-btn {
@@ -154,10 +198,9 @@
 </head>
 <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script> 
 <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+<script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script> 
 <body>
     <h1>Python Code Analyzer</h1>
-
-    <!-- Lottie Animation 1 -->
     <dotlottie-player src="https://lottie.host/172cfcaa-9141-4684-a107-840e08fc5f8a/B1T7agoBSJ.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>
 
     <!-- Upload Form -->
@@ -174,29 +217,55 @@
         <button type="submit">Analyze Code</button>
     </form>
 
-    <!-- Lottie Animation 2 -->
-    <dotlottie-player src="https://lottie.host/b81f2a21-e40a-4110-a745-c3009fc2e9d0/3axHqyQTlB.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>
+     <!-- Lottie Animation 2 -->
+     <dotlottie-player src="https://lottie.host/b81f2a21-e40a-4110-a745-c3009fc2e9d0/3axHqyQTlB.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>
 
-    <!-- Analysis Results -->
-    {% if issues %}
-        <h2>Detected Issues</h2>
-        {% for issue in issues %}
-        <div class="card">
-            <strong>Line {{ issue.line }}:</strong> {{ issue.issue }}<br>
-            <b>Recommendation:</b> {{ issue.recommendation }}
+     <!-- Analysis Results -->
+     {% if issues %}
+         <h2>Detected Issues</h2>
+         {% for issue in issues %}
+         <div class="card">
+             <strong>Line {{ issue.line }}:</strong> {{ issue.issue }}<br>
+             <b>Recommendation:</b> {{ issue.recommendation }}
+         </div>
+         {% endfor %}
+     {% else %}
+         <p>No issues detected.</p>
+     {% endif %}
+ 
+
+    <!-- Original and Optimized Code Section -->
+    <div class="code-container">
+        <div class="code-box">
+            <h2>Original Code:</h2>
+            <pre id="original-code" class="language-python">{{ original_code }}</pre>
         </div>
-        {% endfor %}
-    {% else %}
-        <p>No issues detected.</p>
-    {% endif %}
-
-    <!-- Optimized Code -->
-    <h2>Optimized Code:</h2>
-    <pre>{{ optimized_code }}</pre>
-    <a href="{{ download_url }}">Download Optimized Code</a>
+        <dotlottie-player src="https://lottie.host/d0340c3b-8c07-40e4-bb12-2c9614da70af/os818t5d0g.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>
+        <div class="code-box">
+            <h2>Optimized Code:</h2>
+            <pre id="optimized-code" class="language-python">{{ optimized_code }}</pre>
+        </div>
+    </div>
+    <a href="{{ download_url }}" class="download-btn">Download Optimized Code</a>
 
     <!-- Floating Action Button -->
-    <div class="floating-btn">+</div>
+    <div class="floating-btn" onclick="copyToClipboard()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="white">
+            <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1s-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 16H5V5h2v2h10V5h2v14z" />
+        </svg>
+    </div>
+
+    <script>
+        function copyToClipboard() {
+            const codeElement = document.getElementById('optimized-code');
+            const codeText = codeElement.innerText;
+            navigator.clipboard.writeText(codeText).then(() => {
+                alert('Code copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+        }
+    </script>
 </body>
 
 </html>

@@ -15,6 +15,7 @@ os.makedirs(OPTIMIZED_FOLDER, exist_ok=True)
 
 @app.route("/", methods=["GET", "POST"])
 def index():
+    original_code = ""
     if request.method == "POST":
         # Handle file upload
         if 'file' in request.files:
@@ -25,9 +26,9 @@ def index():
 
                 # Analyze the code
                 with open(file_path, 'r') as f:
-                    code = f.read()
+                    original_code = f.read()
 
-                analyzer = CodeAnalyzer(code)
+                analyzer = CodeAnalyzer(original_code)
                 issues, optimized_code = analyzer.analyze()
 
                 # Save the optimized code
@@ -37,6 +38,7 @@ def index():
 
                 return render_template(
                     "index.html", 
+                    original_code=original_code,
                     issues=issues, 
                     optimized_code=optimized_code, 
                     download_url=url_for('download_file', filename=f"optimized_{file.filename}")
@@ -44,13 +46,13 @@ def index():
 
         # Handle text input
         elif 'code_input' in request.form:
-            code = request.form['code_input']
+            original_code = request.form['code_input']
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], "input_code.py")
 
             with open(file_path, 'w') as f:
-                f.write(code)
+                f.write(original_code)
 
-            analyzer = CodeAnalyzer(code)
+            analyzer = CodeAnalyzer(original_code)
             issues, optimized_code = analyzer.analyze()
 
             # Save the optimized code
@@ -60,12 +62,13 @@ def index():
 
             return render_template(
                 "index.html", 
+                original_code=original_code,
                 issues=issues, 
                 optimized_code=optimized_code, 
                 download_url=url_for('download_file', filename="optimized_input_code.py")
             )
 
-    return render_template("index.html")
+    return render_template("index.html", original_code=original_code)
 
 @app.route('/download/<filename>')
 def download_file(filename):

@@ -1,52 +1,60 @@
 # Sample code to test the analyzer
 
-# Example of nested loops with conditional append
-result = []
-items=[]
+# Example of redundant computation in a loop
+squares = []
+for i in range(10):
+    for j in range(5):
+        squares.append(i * i)
 
-unused_var = 42
-used_var = 10
-print(used_var)
+# Example of unused imports and variables
+import math  # unused import
+unused_variable = "This variable is never used"
 
-for i in range(11):
-    for j in range(10):
-        if (i + j) % 2 == 0:
-            result.append(i * j)
+# Example of inefficient dictionary access
+data = {"a": 1, "b": 2, "c": 3}
+for key in data.keys():
+    if key == "b":
+        print(data[key])
 
-for i in range(len(items)):
-    print(items[i])
+# Example of repeated file reads
+with open("example.txt", "r") as f:
+    lines = f.readlines()
 
-# Example of inefficient list copy
-original_list = [1, 2, 3, 4, 5]
-copied_list = list(original_list)
-print(copied_list)
+with open("example.txt", "r") as f:
+    content = f.read()
 
-# Example of multiple string concatenations
-message = ""
-message += "Hello, "
-message += "world!"
-message += " How are you?"
+# Example of suboptimal string formatting
+name = "Alice"
+age = 25
+info = name + " is " + str(age) + " years old."
+print(info)
 
-# Example of long if-elif chain
-x = 5
-if x == 1:
-    print("One")
-elif x == 2:
-    print("Two")
-elif x == 3:
-    print("Three")
-elif x == 4:
-    print("Four")
-elif x == 5:
-    print("Five")
+# Example of inefficient list comprehension
+numbers = [1, 2, 3, 4, 5]
+squared_numbers = [x * x for x in numbers]
+even_squares = [x for x in squared_numbers if x % 2 == 0]
 
-# Example of multiple list appends
-nums = []
-nums.append(1)
-nums.append(2)
-nums.append(3)
+# Example of deeply nested conditions
+value = 15
+if value > 10:
+    if value < 20:
+        if value % 5 == 0:
+            print("Value is divisible by 5 and between 10 and 20")
 
-# Example of redundant sort
-unsorted_list = [3, 2, 1]
-sorted_list = sorted(unsorted_list)
-another_sorted_list = sorted(sorted_list)
+# Example of excessive logging
+for i in range(5):
+    print(f"Processing item {i}...")
+
+# Example of inefficient use of sets
+items = [1, 2, 3, 4, 1, 2]
+unique_items = []
+for item in items:
+    if item not in unique_items:
+        unique_items.append(item)
+print(unique_items)
+
+# Example of unnecessary variable assignment
+result = 0
+value = 42
+result = value
+print(result)

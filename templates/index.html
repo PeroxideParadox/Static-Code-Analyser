@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Analyzer</title>
+</head>
+<body>
+    <h1>Python Code Analyzer</h1>
+
+    <!-- Upload Form -->
+    <form action="/" method="POST" enctype="multipart/form-data">
+        <h3>Upload a Python File:</h3>
+        <input type="file" name="file" accept=".py">
+        <button type="submit">Analyze File</button>
+    </form>
+
+    <!-- Text Input Form -->
+    <form action="/" method="POST">
+        <h3>Paste Python Code:</h3>
+        <textarea name="code_input" rows="10" cols="50"></textarea><br>
+        <button type="submit">Analyze Code</button>
+    </form>
+
+    <!-- Analysis Results -->
+    {% if issues %}
+        <h2>Detected Issues</h2>
+        <ul>
+            {% for issue in issues %}
+                <li>
+                    Line {{ issue.line }}: {{ issue.issue }}<br>
+                    <b>Recommendation:</b> {{ issue.recommendation }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <!-- Optimized Code -->
+    {% if optimized_code %}
+        <h2>Optimized Code:</h2>
+        <pre>{{ optimized_code }}</pre>
+        <a href="{{ download_url }}">Download Optimized Code</a>
+    {% endif %}
+</body>
+</html>

@@ -1,12 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code Analyzer</title>
+    <title>Python Code Analyzer</title>
+    <style>
+        /* Define Color Scheme as CSS Variables */
+        :root {
+            --primary-color: #F3F3E0;
+            --secondary-color: #133E87;
+            --tertiary-color: #608BC1;
+            --light-blue: #CBDCEB;
+            --accent-color: #E0F7FA;
+            --button-gradient: linear-gradient(135deg, #608BC1, #133E87);
+        }
+
+        /* General Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: var(--secondary-color);
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        /* Form Styling */
+        form {
+            background-color: var(--light-blue);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0;
+            width: 100%;
+            max-width: 600px;
+            transition: transform 0.2s ease;
+        }
+
+        form:hover {
+            transform: translateY(-5px);
+        }
+
+        input[type="file"] {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: var(--accent-color);
+            border: 2px solid var(--tertiary-color);
+            border-radius: 10px;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        textarea {
+            width: 100%;
+            height: 180px;
+            padding: 15px;
+            border: 2px solid var(--tertiary-color);
+            border-radius: 12px;
+            resize: vertical;
+            background-color: var(--accent-color);
+            color: var(--secondary-color);
+            margin: 10px 0;
+        }
+
+        button {
+            background: var(--button-gradient);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            width: 100%;
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        button:hover {
+            transform: translateY(-5px);
+            background-color: #405B7F;
+        }
+
+        /* Detected Issues Section */
+        h2 {
+            color: var(--secondary-color);
+            font-size: 1.8rem;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .card {
+            background-color: var(--accent-color);
+            border: 2px solid var(--light-blue);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        pre {
+            background-color: var(--accent-color);
+            border: 2px solid var(--light-blue);
+            padding: 20px;
+            border-radius: 12px;
+            overflow-x: auto;
+            max-width: 600px;
+            color: var(--secondary-color);
+        }
+
+        .floating-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--button-gradient);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .floating-btn:hover {
+            transform: scale(1.1);
+        }
+    </style>
 </head>
+<script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script> 
+<script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
 <body>
     <h1>Python Code Analyzer</h1>
+
+    <!-- Lottie Animation 1 -->
+    <dotlottie-player src="https://lottie.host/172cfcaa-9141-4684-a107-840e08fc5f8a/B1T7agoBSJ.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>
 
     <!-- Upload Form -->
     <form action="/" method="POST" enctype="multipart/form-data">
@@ -18,28 +170,27 @@
     <!-- Text Input Form -->
     <form action="/" method="POST">
         <h3>Paste Python Code:</h3>
-        <textarea name="code_input" rows="10" cols="50"></textarea><br>
+        <textarea name="code_input" placeholder="Paste your code here..."></textarea><br>
         <button type="submit">Analyze Code</button>
     </form>
 
+    <!-- Lottie Animation 2 -->
+    <dotlottie-player src="https://lottie.host/b81f2a21-e40a-4110-a745-c3009fc2e9d0/3axHqyQTlB.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>
+
     <!-- Analysis Results -->
-    {% if issues %}
-        <h2>Detected Issues</h2>
-        <ul>
-            {% for issue in issues %}
-                <li>
-                    Line {{ issue.line }}: {{ issue.issue }}<br>
-                    <b>Recommendation:</b> {{ issue.recommendation }}
-                </li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+    <h2>Detected Issues</h2>
+    <div class="card">
+        <strong>Line {{ issue.line }}:</strong> {{ issue.issue }}<br>
+        <b>Recommendation:</b> {{ issue.recommendation }}
+    </div>
 
     <!-- Optimized Code -->
-    {% if optimized_code %}
-        <h2>Optimized Code:</h2>
-        <pre>{{ optimized_code }}</pre>
-        <a href="{{ download_url }}">Download Optimized Code</a>
-    {% endif %}
+    <h2>Optimized Code:</h2>
+    <pre>{{ optimized_code }}</pre>
+    <a href="{{ download_url }}">Download Optimized Code</a>
+
+    <!-- Floating Action Button -->
+    <div class="floating-btn">+</div>
 </body>
+
 </html>

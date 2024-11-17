@@ -178,11 +178,17 @@
     <dotlottie-player src="https://lottie.host/b81f2a21-e40a-4110-a745-c3009fc2e9d0/3axHqyQTlB.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>
 
     <!-- Analysis Results -->
-    <h2>Detected Issues</h2>
-    <div class="card">
-        <strong>Line {{ issue.line }}:</strong> {{ issue.issue }}<br>
-        <b>Recommendation:</b> {{ issue.recommendation }}
-    </div>
+    {% if issues %}
+        <h2>Detected Issues</h2>
+        {% for issue in issues %}
+        <div class="card">
+            <strong>Line {{ issue.line }}:</strong> {{ issue.issue }}<br>
+            <b>Recommendation:</b> {{ issue.recommendation }}
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>No issues detected.</p>
+    {% endif %}
 
     <!-- Optimized Code -->
     <h2>Optimized Code:</h2>

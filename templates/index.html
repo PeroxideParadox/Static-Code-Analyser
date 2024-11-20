@@ -173,6 +173,10 @@
             white-space: pre-wrap;
             word-wrap: break-word;
         }
+        .emissions-graph img {
+            max-width: 100%;
+            border-radius: 12px;
+        }
 
         .floating-btn {
             position: fixed;
@@ -194,6 +198,7 @@
         .floating-btn:hover {
             transform: scale(1.1);
         }
+        
     </style>
 </head>
 <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script> 
@@ -232,7 +237,6 @@
      {% else %}
          <p>No issues detected.</p>
      {% endif %}
- 
 
     <!-- Original and Optimized Code Section -->
     <div class="code-container">
@@ -247,6 +251,81 @@
         </div>
     </div>
     <a href="{{ download_url }}" class="download-btn">Download Optimized Code</a>
+
+    {% if original_emissions is defined and optimized_emissions is defined %}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Carbon Emissions Analysis</h2>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4>Original Code Emissions</h4>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        <strong>Emissions:</strong> {{ "%.6f"|format(original_emissions) }} kg CO2
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h4>Optimized Code Emissions</h4>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        <strong>Emissions:</strong> {{ "%.6f"|format(optimized_emissions) }} kg CO2
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h4>Emission Reduction</h4>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        <strong>Reduction Percentage:</strong> {{ "%.2f"|format(improvement) }}%
+                    </p>
+                    <div class="progress">
+                        <div 
+                            class="progress-bar bg-success" 
+                            role="progressbar" 
+                            style="width: {{ "%.2f"|format(improvement) }}%;"
+                            aria-valuenow="{{ improvement }}" 
+                            aria-valuemin="0" 
+                            aria-valuemax="100">
+                            {{ "%.2f"|format(improvement) }}% Reduction
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% if graph_url %}
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card emissions-graph">
+                <div class="card-header bg-secondary text-white">
+                    <h4>Carbon Emissions Comparison Graph</h4>
+                </div>
+                <div class="card-body text-center">
+                    <img src="{{ graph_url }}" alt="Emissions Comparison Graph" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endif %}
 
     <!-- Floating Action Button -->
     <div class="floating-btn" onclick="copyToClipboard()">

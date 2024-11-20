@@ -33,11 +33,3 @@ elif x == 4:
 elif x == 5:
     print("Five")
 # Example of multiple list appends
-nums = []
-nums.append(1)
-nums.append(2)
-nums.append(3)
-# Example of redundant sort
-unsorted_list = [3, 2, 1]
-sorted_list = sorted(unsorted_list)
-another_sorted_list = sorted(sorted_list)
